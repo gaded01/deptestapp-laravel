@@ -17,7 +17,7 @@ class BeckOptionSeeder extends Seeder
     {
         $beck_option = [
             [
-                "option" => "i do not feel sad",
+                "option" => "I do not feel sad",
                 "value" => "0",
                 "beck_item_id" => "1",
             ],
