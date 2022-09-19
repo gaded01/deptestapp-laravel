@@ -22,5 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/user-login', [UserController::class, 'loginUser']);
 Route::post('/user-signup', [UserController::class, 'signupUser']);
-Route::get('/get-beckoption2', [BeckTestController::class, 'getBeckOption2']);
-Route::post('/get-beckoption/{id}', [BeckTestController::class, 'getBeckOption']);
+
+Route::group(['middleware' => 'auth:sanctum'], function(){
+    Route::get('/get-beckoption2', [BeckTestController::class, 'getBeckOption2']);
+    Route::post('/get-beckoption/{id}', [BeckTestController::class, 'getBeckOption']);
+    Route::post('/beck-answer', [BeckTestController::class, 'testAnswer']);
+});
+
