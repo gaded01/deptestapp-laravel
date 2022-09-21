@@ -17,6 +17,6 @@ class BeckAnswer extends Model
 
     public function beckOption()
     {
-        return $this->hasOne(BeckOption::class, 'id', 'beck_option_id');
+        return $this->belongsTo(BeckOption::class, 'beck_option_id');
     }
 }

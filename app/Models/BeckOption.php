@@ -19,6 +19,8 @@ class BeckOption extends Model
         return $this->hasOne(BeckItem::class, 'id', 'beck_item_id');
     }
 
+    
+
 
 
 }

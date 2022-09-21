@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             BeckItemSeeder::class,
             BeckOptionSeeder::class,
             UserSeeder::class,
+            BeckDepressionLevelSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 
