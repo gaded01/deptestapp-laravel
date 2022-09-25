@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('beck_test_results', function (Blueprint $table) {
+        Schema::create('usdi_test_takes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
             ->constrained()
             ->onUpdate('cascade')
             ->onDelete('cascade');
-            $table->integer('score');
-            $table->string('depression_level_id');
+            $table->integer('take');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('beck_test_results');
+        Schema::dropIfExists('usdi_test_takes');
     }
 };

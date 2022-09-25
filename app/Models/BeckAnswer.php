@@ -10,7 +10,7 @@ class BeckAnswer extends Model
     use HasFactory;
 
     protected $fillable = [
-        "user_id",
+        "beck_test_take_id",
         "beck_option_id",
     ];
 
@@ -19,4 +19,6 @@ class BeckAnswer extends Model
     {
         return $this->belongsTo(BeckOption::class, 'beck_option_id');
     }
+
+    
 }

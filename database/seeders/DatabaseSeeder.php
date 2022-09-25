@@ -5,6 +5,9 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\BeckItem;
+use App\Models\UsdiDepressionLevel;
+use App\Models\UsdiOption;
+use App\Models\UsdiQuestion;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,6 +24,9 @@ class DatabaseSeeder extends Seeder
             BeckOptionSeeder::class,
             UserSeeder::class,
             BeckDepressionLevelSeeder::class,
+            UsdiOptionSeeder::class,
+            UsdiQuestionSeeder::class,
+            UsdiDepressionLevelSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 

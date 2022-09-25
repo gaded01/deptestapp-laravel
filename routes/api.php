@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BeckTestController;
+use App\Http\Controllers\UsdiTestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,10 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('/get-beckoption2', [BeckTestController::class, 'getBeckOption2']);
     Route::post('/get-beckoption/{id}', [BeckTestController::class, 'getBeckOption']);
     Route::post('/beck-answer', [BeckTestController::class, 'testAnswer']);
-    Route::post('/beck-result', [BeckTestController::class, 'testResult']);
+    Route::get('/beck-result', [BeckTestController::class, 'testResult']);
+    Route::post('/get-usdiquestion/{id}', [UsdiTestController::class, 'getUsdiQuestion']);
+    Route::get('/get-usdioption', [UsdiTestController::class, 'getUsdiOption']);
+    Route::post('/usdi-answer', [UsdiTestController::class, 'usdiAnswer']);
+    Route::get('/usdi-result', [UsdiTestController::class, 'usdiResult']);
 });
 

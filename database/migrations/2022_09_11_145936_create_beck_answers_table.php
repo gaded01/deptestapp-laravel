@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('beck_answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')
+            $table->foreignId('beck_test_take_id')
             ->constrained()
             ->onUpdate('cascade')
             ->onDelete('cascade');

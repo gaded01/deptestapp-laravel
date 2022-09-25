@@ -25,6 +25,8 @@ class UserController extends Controller
             ]);
         }
     }
+
+    
     public function signupUser(Request $request)
     {   
         $validator = Validator::make($request->all(),[
@@ -44,4 +46,6 @@ class UserController extends Controller
         ]);
         return $user;
     }
+
+    
 }
