@@ -3,6 +3,7 @@
 use App\Http\Controllers\BeckTestController;
 use App\Http\Controllers\UsdiTestController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,5 +34,6 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('/get-usdioption', [UsdiTestController::class, 'getUsdiOption']);
     Route::post('/usdi-answer', [UsdiTestController::class, 'usdiAnswer']);
     Route::get('/usdi-result', [UsdiTestController::class, 'usdiResult']);
+    Route::post('/check-test', [UserController::class, 'checkLastTest']);
 });
 

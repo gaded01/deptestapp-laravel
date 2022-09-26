@@ -10,7 +10,7 @@ class BeckAnswer extends Model
     use HasFactory;
 
     protected $fillable = [
-        "beck_test_take_id",
+        "test_take_id",
         "beck_option_id",
     ];
 

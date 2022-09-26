@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BeckTestTake;
+use App\Models\TestTake;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,7 +19,7 @@ class UserController extends Controller
             return response()->json([
                 'access_token' => $token,
                 'user' => $user,
-            ]); 
+            ]);
         }
         else {
             return response()->json([
@@ -47,5 +50,18 @@ class UserController extends Controller
         return $user;
     }
 
+    public function checkLastTest(Request $request)
+    {
+        $userTest = TestTake::where('user_id', $request->user()->id)->orderBy('id', 'desc')->first();
+        if($userTest !== null) {
+            if(Carbon::now() < Carbon::parse($userTest->updated_at)->addDays(3)){
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Test 3 days after you take the test.',
+                ]);
+            }
+        }
+        return;
+    }
     
 }

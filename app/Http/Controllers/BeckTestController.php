@@ -7,6 +7,7 @@ use App\Models\BeckItem;
 use App\Models\BeckOption;
 use App\Models\BeckTestResult;
 use App\Models\BeckTestTake;
+use App\Models\TestTake;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,26 +33,28 @@ class BeckTestController extends Controller
 
    public function testAnswer(Request $request)
    {  
-      $beckTake = BeckTestTake::where('user_id', $request->user()->id)->orderBy('take', 'desc')->first();
-      if($beckTake !== null) {
-         $getBeckAnswer = BeckAnswer::where('beck_test_take_id', $beckTake->id)->get();
+      $testTake = TestTake::where('user_id', $request->user()->id)->where('type', "0")->orderBy('take', 'desc')->first();
+      if($testTake !== null) {
+         $getBeckAnswer = BeckAnswer::where('test_take_id', $testTake->id)->get();
          $beckAnswerCount = $getBeckAnswer->count();
-         if($beckAnswerCount === 21){
-            BeckTestTake::create([
+         if($beckAnswerCount >= 21){
+            TestTake::create([
                'user_id' => $request->user()->id,
-               
-            ]);
+               'type' => "0",
+               'take' => $testTake->take += 1,
+            ]); 
          }
       }
       else{
-         BeckTestTake::create([
+         TestTake::create([
             'user_id' => $request->user()->id,
+            'type' => "0",
             'take' => 1,
          ]);
       }
     
       $beckAnswer = BeckAnswer::create([
-         'beck_test_take_id' => $beckTake? $beckTake->id : 1,
+         'test_take_id' => $testTake? $testTake->id : 1,
          'beck_option_id' => $request->id
       ]);
       
@@ -60,11 +63,11 @@ class BeckTestController extends Controller
 
    public function testResult(Request $request)
    {  
-      $testTake = BeckTestTake::where('user_id', $request->user()->id)->orderBy('take', 'desc')->first();
+      $testTake = TestTake::where('user_id', $request->user()->id)->where('type', "0")->orderBy('take', 'desc')->first();
       if($testTake === null) {
          return false;
       }
-      $testResultValue = BeckAnswer::where('beck_test_take_id', $testTake->id)->join('beck_options', 'beck_answers.beck_option_id' ,'=' , 'beck_options.id')->sum('value');
+      $testResultValue = BeckAnswer::where('test_take_id', $testTake->id)->join('beck_options', 'beck_answers.beck_option_id' ,'=' , 'beck_options.id')->sum('value');
       
       $depressionLevel = null;
       if($testResultValue <= 10) {
@@ -94,4 +97,7 @@ class BeckTestController extends Controller
 
       return BeckTestResult::where('user_id' , $request->user()->id)->with('beckDepressionLevel')->latest('created_at')->first();
    }
+
+
+  
 }

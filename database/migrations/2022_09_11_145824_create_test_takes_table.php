@@ -13,20 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('usdi_answers', function (Blueprint $table) {
+        Schema::create('test_takes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('test_take_id')
+            $table->foreignId('user_id')
             ->constrained()
             ->onUpdate('cascade')
             ->onDelete('cascade');
-            $table->foreignId('usdi_question_id')
-            ->constrained()
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
-            $table->foreignId('usdi_option_id')
-            ->constrained()
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+            $table->enum('type',[0,1])->default(0);
+            $table->integer('take');
             $table->timestamps();
         });
     }
@@ -38,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('usdi_answers');
+        Schema::dropIfExists('test_takes');
     }
 };

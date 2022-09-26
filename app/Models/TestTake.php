@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UsdiAnswer extends Model
+class TestTake extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        "test_take_id",
-        "usdi_question_id",
-        "usdi_option_id",
+        "user_id",
+        "type",
+        "take",
+       
     ];
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TestTake;
 use App\Models\UsdiAnswer;
 use App\Models\UsdiOption;
 use App\Models\UsdiQuestion;
@@ -24,42 +25,42 @@ class UsdiTestController extends Controller
         return UsdiOption::all();
     }
 
-    public function usdiAnswer(Request $request)
-    {
-        $usdiTake = UsdiTestTake::where('user_id', $request->user()->id)->orderBy('take', 'desc')->first();
-        if($usdiTake !== null) {
-            $getUsdiAnswer = UsdiAnswer::where('usdi_test_take_id', $usdiTake->id)->get();
-            $usdiAnswerCount = $getUsdiAnswer->count();
-            if($usdiAnswerCount === 30){
-                UsdiTestTake::create([
-                 'user_id' => $request->user()->id,
-                 'take' => 2,
-              ]);
-           }
-        }
-        else{
-            UsdiTestTake::create([
-              'user_id' => $request->user()->id,
-              'take' => 1,
-           ]);
-        }
+    public function usdiAnswer(Request $request){
+      $testTake = TestTake::where('user_id', $request->user()->id)->where('type', "1")->orderBy('take', 'desc')->first();
+      if($testTake !== null) {
+         $getUsdiAnswer = UsdiAnswer::where('test_take_id', $testTake->id)->get();
+         $usdiAnswerCount = $getUsdiAnswer->count();
+         if($usdiAnswerCount >= 30){
+            TestTake::create([
+               'user_id' => $request->user()->id,
+               'type' => "1",
+               'take' => $testTake-> take += 1,
+            ]);
+         }  
+      }
+      else{
+         TestTake::create([
+            'user_id' => $request->user()->id,
+            'type' => "1",
+            'take' => 1,
+      ]);
+      }
+      $testAnswer = UsdiAnswer::create([
+         'test_take_id' => $testTake? $testTake->id : 1,
+         'usdi_question_id' => $request->usdi_question_id,
+         'usdi_option_id' => $request->usdi_option_id
+      ]);
       
-        $testAnswer = UsdiAnswer::create([
-           'usdi_test_take_id' => $usdiTake? $usdiTake->id : 1,
-           'usdi_question_id' => $request->usdi_question_id,
-           'usdi_option_id' => $request->usdi_option_id
-        ]);
-        
-        return $testAnswer;
+      return $testAnswer;
     }
 
     public function usdiResult(Request $request)
    {  
-      $usdiTake = UsdiTestTake::where('user_id', $request->user()->id)->orderBy('take', 'desc')->first();
-      if($usdiTake === null) {
+      $testTake = TestTake::where('user_id', $request->user()->id)->where('type', '1')->orderBy('take', 'desc')->first();
+      if($testTake === null) {
          return false;
       }
-      $usdiResultValue = usdiAnswer::where('usdi_test_take_id', $usdiTake->id)->join('usdi_options', 'usdi_answers.usdi_option_id' ,'=' , 'usdi_options.id')->sum('score');
+      $usdiResultValue = usdiAnswer::where('test_take_id', $testTake->id)->join('usdi_options', 'usdi_answers.usdi_option_id' ,'=' , 'usdi_options.id')->sum('score');
       
       $depressionLevel = null;
       if($usdiResultValue <= 30) {

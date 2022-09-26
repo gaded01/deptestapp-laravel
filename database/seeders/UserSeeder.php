@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
     {
         $admin_user = [
             [
-                'email' => 'guidance_councilor@gmail.com',
+                'email' => 'g@gmail.com',
                 'role' => '1',
                 'age' => '25'
             ]
