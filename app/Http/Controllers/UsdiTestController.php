@@ -83,5 +83,4 @@ class UsdiTestController extends Controller
       ]);
       return UsdiResult::where('user_id' , $request->user()->id)->with('usdiDepressionLevel')->latest('created_at')->first();
    }
-    
 }
