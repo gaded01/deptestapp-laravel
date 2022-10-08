@@ -31,8 +31,13 @@ Route::post('/user-signup', [UserController::class, 'signupUser']);
 Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('/get-beckoption2', [BeckTestController::class, 'getBeckOption2']);
     Route::post('/get-beckoption/{id}', [BeckTestController::class, 'getBeckOption']);
+
+    Route::get('/beck-item', [BeckTestController::class, 'countAnswer']);
     Route::post('/beck-answer', [BeckTestController::class, 'testAnswer']);
     Route::get('/beck-result', [BeckTestController::class, 'testResult']);
+
+    Route::get('/usdi-item', [UsdiTestController::class, 'countUsdiAnswer']);
+
     Route::post('/get-usdiquestion/{id}', [UsdiTestController::class, 'getUsdiQuestion']);
     Route::get('/get-usdioption', [UsdiTestController::class, 'getUsdiOption']);
     Route::post('/usdi-answer', [UsdiTestController::class, 'usdiAnswer']);

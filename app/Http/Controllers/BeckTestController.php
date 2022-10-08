@@ -30,18 +30,38 @@ class BeckTestController extends Controller
       
       return $beckOption2;
    }
-
-   public function testAnswer(Request $request)
+   
+   public function countAnswer(Request $request)
+   {
+      $testTake = TestTake::where('user_id', $request->user()->id)->where('type', "0")->orderBy('take', 'desc')->first();
+      if($testTake !== null) {
+         $getBeckAnswer = BeckAnswer::where('test_take_id', $testTake->id)->get();
+         $countItem = $getBeckAnswer->count();
+         if($countItem >= 21) {
+            return 1;
+         }
+         else {
+            return $countItem + 1;
+         }
+      }
+      else {
+         return 1;
+      }
+   }
+  public function testAnswer(Request $request)
    {  
       $testTake = TestTake::where('user_id', $request->user()->id)->where('type', "0")->orderBy('take', 'desc')->first();
       if($testTake !== null) {
          $getBeckAnswer = BeckAnswer::where('test_take_id', $testTake->id)->get();
-         $beckAnswerCount = $getBeckAnswer->count();
+         $beckAnswerCount = $getBeckAnswer? $getBeckAnswer->count() + 1 : 1;
+         if($beckAnswerCount == 20 ){
+            TestTake::where('id', $testTake->id)->update(["status" => "1"]);
+         }
          if($beckAnswerCount >= 21){
             TestTake::create([
                'user_id' => $request->user()->id,
-               'type' => "0",
-               'take' => $testTake->take += 1,
+               'type' => "0", 
+               'take' => $testTake->take += 1
             ]); 
          }
       }
@@ -52,13 +72,14 @@ class BeckTestController extends Controller
             'take' => 1,
          ]);
       }
-    
       $beckAnswer = BeckAnswer::create([
          'test_take_id' => $testTake? $testTake->id : 1,
-         'beck_option_id' => $request->id
+         'beck_option_id' => $request->id,
       ]);
       
-      return $beckAnswer;
+      return response()->json([
+         'beckAnswer' => $beckAnswer
+      ]);
    }
 
    public function testResult(Request $request)

@@ -24,12 +24,32 @@ class UsdiTestController extends Controller
         
         return UsdiOption::all();
     }
+    public function countUsdiAnswer(Request $request)
+    {
+       $testTake = TestTake::where('user_id', $request->user()->id)->where('type', "1")->orderBy('take', 'desc')->first();
+       if($testTake !== null) {
+          $getUsdiAnswer = UsdiAnswer::where('test_take_id', $testTake->id)->get();
+          $countItem = $getUsdiAnswer->count();
+          if($countItem >= 30) {
+             return 1; 
+          }
+          else {
+             return $countItem + 1;
+          }
+       }
+       else {
+          return null;
+       }
+    }
 
     public function usdiAnswer(Request $request){
       $testTake = TestTake::where('user_id', $request->user()->id)->where('type', "1")->orderBy('take', 'desc')->first();
       if($testTake !== null) {
          $getUsdiAnswer = UsdiAnswer::where('test_take_id', $testTake->id)->get();
-         $usdiAnswerCount = $getUsdiAnswer->count();
+         $usdiAnswerCount = $getUsdiAnswer? $getUsdiAnswer->count() + 1 : 1;
+         if($usdiAnswerCount == 29 ){
+            TestTake::where('id', $testTake->id)->update(["status" => "1"]);
+         }
          if($usdiAnswerCount >= 30){
             TestTake::create([
                'user_id' => $request->user()->id,
@@ -43,7 +63,7 @@ class UsdiTestController extends Controller
             'user_id' => $request->user()->id,
             'type' => "1",
             'take' => 1,
-      ]);
+         ]);
       }
       $testAnswer = UsdiAnswer::create([
          'test_take_id' => $testTake? $testTake->id : 1,

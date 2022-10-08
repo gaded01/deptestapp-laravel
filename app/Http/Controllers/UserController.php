@@ -52,13 +52,17 @@ class UserController extends Controller
 
     public function checkLastTest(Request $request)
     {
-        $userTest = TestTake::where('user_id', $request->user()->id)->orderBy('id', 'desc')->first();
+        $userTest = TestTake::where('user_id', $request->user()->id)
+        ->orderBy('id', 'desc')
+        ->first();
         if($userTest !== null) {
-            if(Carbon::now() < Carbon::parse($userTest->updated_at)->addDays(3)){
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Test 3 days after you take the test.',
-                ]);
+            if($userTest->status == "1"){
+                if(Carbon::now() < Carbon::parse($userTest->updated_at)->addDays(3)){
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'Test 3 days after you take the test.',
+                    ]);
+                }
             }
         }
         return;

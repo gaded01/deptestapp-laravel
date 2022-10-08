@@ -19,6 +19,10 @@ class BeckAnswer extends Model
     {
         return $this->belongsTo(BeckOption::class, 'beck_option_id');
     }
+    public function testTake()
+    {
+        return $this->belongsTo(TestTake::class, 'test_take_id');
+    }
 
     
 }

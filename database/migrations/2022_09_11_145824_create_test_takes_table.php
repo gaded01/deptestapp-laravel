@@ -21,6 +21,7 @@ return new class extends Migration
             ->onDelete('cascade');
             $table->enum('type',[0,1])->default(0);
             $table->integer('take');
+            $table->enum('status',[0,1])->default(0);
             $table->timestamps();
         });
     }

@@ -16,9 +16,7 @@ return new class extends Migration
         Schema::create('usdi_answers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('test_take_id')
-            ->constrained()
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+            ->nullable();
             $table->foreignId('usdi_question_id')
             ->constrained()
             ->onUpdate('cascade')
